@@ -15,11 +15,10 @@ import os
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
+from secrets import *
+
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.10/howto/deployment/checklist/
-
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'vdcxuhg=p3c@+6v$-5v&ez^9j3r+a&#6p!#qdym=564^1-is=m'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -39,6 +38,7 @@ INSTALLED_APPS = [
 	'django.contrib.sites',
 	'registration.backends.hmac',
 	'bootstrap3',
+	'captcha',
 ]
 
 MIDDLEWARE = [
