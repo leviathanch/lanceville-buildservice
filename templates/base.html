@@ -37,10 +37,10 @@
 					<ul class="nav navbar-nav navbar-right">
 						<li><a href="/">Home</a></li>
 						{% if user.is_authenticated %}
-						<li><a href="{% url 'accounts:auth_logout' %}?next=/">Logout</a></li>
+						<li><a href="{% url 'auth_logout' %}?next=/">Logout</a></li>
 						{% else %}
-						<li><a href="{% url 'accounts:auth_login' %}?next=/">Login</a></li>
-						<li><a href="{% url 'accounts:registration_register' %}?next=/">Register</a></li>
+						<li><a href="{% url 'auth_login' %}?next=/">Login</a></li>
+						<li><a href="{% url 'registration_register' %}?next=/">Register</a></li>
 						{% endif %}
 					</ul>
 				</div>
