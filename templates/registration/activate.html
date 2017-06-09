@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block head %}
+
+
+{% endblock %}
+
+{% block body_block %}
+
+<h1>Activation</h1>
+<p>Your account is now activated. Go <a href="{% url 'accounts:registration_activation_complete' %}">here</a> to continue.</p>
+
+{% endblock body_block %}
