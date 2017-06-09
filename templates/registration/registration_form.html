@@ -1,10 +1,8 @@
 {% extends "base.html" %}
 {% load i18n %}
-
-{% block head %}
-
-
-{% endblock %}
+{% block head_block %}
+		<script src='https://www.google.com/recaptcha/api.js'></script>
+{% endblock head_block %}
 
 {% block body_block %}
 {% if form.errors %}
@@ -14,17 +12,18 @@
 <br>
 {% endif %}
 
-<h2>Make a choice:</h2>
-<p> <a href="{% url 'accounts:registration_register' %}">Register</a> | <a href="{% url 'accounts:auth_login' %}">Log-In</a></p>
-
 <form action="" method="post">
 	<fieldset>
 		{% csrf_token %}
-		<legend>{% trans "Sign In Using Your Account ID" %}</legend>
+		<legend>{% trans "Sign Up" %}</legend>
 		<table>
 		{{ form.as_table }}
 		</table>
+		<br/>
+		<div class="g-recaptcha" data-sitekey="{{GOOGLE_RECAPTCHA_SITE_KEY}}"></div>
+		<br/>
 		<p><input type="submit" name="bsignup'" value="{% trans "Sign up" %}"> </p>
 	</fieldset>
 </form>
+
 {% endblock body_block %}

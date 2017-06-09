@@ -1,14 +1,6 @@
 {% extends "base.html" %}
 
-{% block body_block %}
-
 {% load i18n static %}
-
-{% block extrastyle %}{{ block.super }}<link rel="stylesheet" type="text/css" href="{% static "admin/css/login.css" %}" />
-{{ form.media }}
-{% endblock %}
-
-{% block bodyclass %}{{ block.super }} login{% endblock %}
 
 {% block usertools %}{% endblock %}
 
@@ -18,8 +10,13 @@
 
 {% block breadcrumbs %}{% endblock %}
 
-{% block content %}
+{% block body_block %}
+
+<h1>Login</h1>
+<br/>
+
 {% if form.errors and not form.non_field_errors %}
+
 <p class="errornote">
 {% if form.errors.items|length == 1 %}{% trans "Please correct the error below." %}{% else %}{% trans "Please correct the errors below." %}{% endif %}
 </p>
@@ -42,7 +39,8 @@
 </p>
 {% endif %}
 
-<form action="{{ app_path }}" method="post" id="login-form">{% csrf_token %}
+<form action="{{ app_path }}" method="post" id="login-form">
+	{% csrf_token %}
 	<div class="form-row">
 		{{ form.username.errors }}
 		{{ form.username.label_tag }} {{ form.username }}
@@ -52,7 +50,7 @@
 		{{ form.password.label_tag }} {{ form.password }}
 		<input type="hidden" name="next" value="{{ next }}" />
 	</div>
-	{% url 'admin_password_reset' as password_reset_url %}
+	{% url "accounts:auth_password_reset" as password_reset_url %}
 
 	{% if password_reset_url %}
 	<div class="password-reset-link">
@@ -67,6 +65,5 @@
 </form>
 
 </div>
-{% endblock %}
 
 {% endblock body_block %}
