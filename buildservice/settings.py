@@ -27,6 +27,7 @@ ALLOWED_HOSTS = [
 	"127.0.0.1",
 	"localhost",
 	"ocb.lanceville.cn",
+	"ec2-13-58-165-77.us-east-2.compute.amazonaws.com",
 ]
 ACCOUNT_ACTIVATION_DAYS = 1
 
