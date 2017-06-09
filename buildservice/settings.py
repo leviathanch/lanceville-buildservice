@@ -25,7 +25,7 @@ SECRET_KEY = 'vdcxuhg=p3c@+6v$-5v&ez^9j3r+a&#6p!#qdym=564^1-is=m'
 DEBUG = True
 
 ALLOWED_HOSTS = ["127.0.0.1","localhost"]
-ACCOUNT_ACTIVATION_DAYS = 0
+ACCOUNT_ACTIVATION_DAYS = 1
 
 # Application definition
 
@@ -37,7 +37,7 @@ INSTALLED_APPS = [
 	'django.contrib.messages',
 	'django.contrib.staticfiles',
 	'django.contrib.sites',
-	'registration',
+	'registration.backends.hmac',
 	'bootstrap3',
 ]
 
@@ -101,6 +101,7 @@ AUTH_PASSWORD_VALIDATORS = [
 	},
 ]
 
+ACCOUNT_EMAIL_VERIFICATION = "mandatory"
 
 # Internationalization
 # https://docs.djangoproject.com/en/1.10/topics/i18n/
