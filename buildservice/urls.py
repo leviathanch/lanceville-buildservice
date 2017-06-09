@@ -12,4 +12,6 @@ urlpatterns = [
 	#including with and without namespace: workaround for buggy name reverse resolution
 	url(r'^accounts/', include('registration.backends.hmac.urls', namespace='accounts')),
 	url(r'^accounts/', include('registration.backends.hmac.urls')),
+	url(r'^register/$', buildservice.views.RegistrationViewCaptcha.as_view(), name='registration_register'),
+	url(r'^accounts/register/$', buildservice.views.RegistrationViewCaptcha.as_view(), name='registration_register'),
 ]

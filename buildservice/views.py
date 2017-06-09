@@ -4,6 +4,7 @@ from django.conf import settings
 from django.views.generic.base import TemplateView
 from django.http import HttpResponse
 from django.views.generic.base import View
+from registration.backends.hmac.views import RegistrationView
 
 class index(TemplateView):
 	#template_name = 'base.html'
@@ -14,3 +15,8 @@ class index(TemplateView):
 		response = super(index, self).dispatch(request, *args, **kwargs)
 		response.render()
 		return response
+
+
+class RegistrationViewCaptcha(RegistrationView):
+	def register(self, form):
+		self.register(self, form)
