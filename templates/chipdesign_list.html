@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% load menu %}
+{% load bootstrap3 %}
+
+{% block body_block %}
+	{% if user.is_authenticated %}
+		<ul>{% for design in design_list %}
+			<li>{{design}}	</li>
+		{% endfor %}</ul>
+		{{ AddButton }}
+	{% else %}
+		<h1>Login is required</h1>
+	{% endif %}
+{% endblock %}
