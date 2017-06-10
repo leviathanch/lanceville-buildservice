@@ -39,8 +39,10 @@ INSTALLED_APPS = [
 	'django.contrib.staticfiles',
 	'django.contrib.sites',
 	'registration.backends.hmac',
+	'menu',
 	'bootstrap3',
 	'captcha',
+	'buildservice',
 ]
 
 MIDDLEWARE = [
@@ -66,7 +68,6 @@ TEMPLATES = [
 				'django.template.context_processors.request',
 				'django.contrib.auth.context_processors.auth',
 				'django.contrib.messages.context_processors.messages',
-				'buildservice.keys.google_site_key'
 			],
 		},
 	},
