@@ -4,6 +4,7 @@ We run it on AWS and help you easily designing ASICs with a few clicks and no ma
 
 ## Deployment
 * Everytime you change something related to styles you have to run "./manage.py collectstatic" in order to make sure, that it's being rendered correctly.
+* Always run "./manage.py migrate --run-syncdb" after pulling
 * You also need a PostGresSQL database server
 * All passwords are stored in a file called "secrets.py" which is not managed in GIT
 
