@@ -1,3 +1,4 @@
+#!/bin/python
 """
 WSGI config for buildservice project.
 
