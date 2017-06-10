@@ -80,8 +80,11 @@ WSGI_APPLICATION = 'buildservice.wsgi.application'
 
 DATABASES = {
 	'default': {
-		'ENGINE': 'django.db.backends.sqlite3',
-		'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+		'ENGINE': 'django.db.backends.postgresql',
+		'NAME': POSTGRES_DATABASE,
+		'USER': POSTGRES_USER,
+		'PASSWORD': POSTGRES_SECRET,
+		'HOST': '127.0.0.1',
 	}
 }
 
