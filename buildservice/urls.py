@@ -2,7 +2,6 @@ from django.conf.urls import url
 from django.conf.urls import include
 from django.contrib import admin
 from django.views.generic.base import TemplateView
-from django.conf.urls.static import static
 
 import buildservice.settings
 import buildservice.views
@@ -23,4 +22,4 @@ urlpatterns = [
 	url(r'^register/complete/$', TemplateView.as_view(template_name='registration/registration_complete.html'), name='registration_complete'),
 	url(r'^register/closed/$', TemplateView.as_view(template_name='registration/registration_closed.html'),name='registration_disallowed'),
 	url(r'', include('registration.auth_urls')),
-] + static(buildservice.settings.STATIC_URL, document_root=buildservice.settings.BASE_DIR)
+]
