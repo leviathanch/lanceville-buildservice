@@ -1,14 +1,9 @@
 {% extends "base.html" %}
+{% block content %}
 {% load menu %}
 {% load bootstrap3 %}
-
-{% block body_block %}
-	{% if user.is_authenticated %}
-		<ul>{% for design in design_list %}
-			<li>{{design}}	</li>
-		{% endfor %}</ul>
-		{{ AddButton }}
-	{% else %}
-		<h1>Login is required</h1>
-	{% endif %}
+{% load i18n %}
+{% load django_tables2 %}
+{% load crispy_forms_tags %}
+{% render_table table %}
 {% endblock %}

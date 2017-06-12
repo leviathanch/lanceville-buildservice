@@ -1,11 +1,12 @@
 {% extends "base.html" %}
 {% load menu %}
 {% load bootstrap3 %}
+{% load i18n %}
 
-{% block body_block %}
-	{% if user.is_authenticated %}
-		{{ AddButton }}
-	{% else %}
-		<h1>Login is required</h1>
-	{% endif %}
+{% block content %}
+	<form action="" method="post">
+	{% csrf_token %}
+	{{ form.as_p }}
+	<input type="submit" value="Save" />
+	</form>
 {% endblock %}
