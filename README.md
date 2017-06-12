@@ -12,3 +12,14 @@ We run it on AWS and help you easily designing ASICs with a few clicks and no ma
 * django-simple-menu
 * django-recaptcha
 * django-registration-redux
+* django-allauth
+* django-betterforms
+* django-tinymce
+* django-formtools
+* django-cms
+* django-treebeard
+* treebeard
+* django-multisite
+* django-suit
+* django-tables2
+* django-crispy-forms
