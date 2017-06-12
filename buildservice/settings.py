@@ -70,6 +70,10 @@ INSTALLED_APPS = [
 #	'allauth.socialaccount.providers.xing',
 	'betterforms',
 	'buildservice',
+	'qflow',
+	'yosys',
+	'graywolf',
+	'qrouter',
 ]
 
 MIDDLEWARE = [
