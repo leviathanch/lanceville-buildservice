@@ -3,6 +3,8 @@ import textwrap
 from django.utils import timezone
 from django.conf import settings
 from django.urls import reverse
+from django.core.urlresolvers import reverse_lazy
+from django.views.decorators.csrf import csrf_protect
 
 from django.views.generic.base import View
 from registration.backends.hmac.views import RegistrationView
@@ -10,47 +12,82 @@ from django.views.generic.base import TemplateView
 from django.views.generic import ListView
 
 from forms import RegistrationFormCaptcha
-from forms import ChipDesignSelectionForm
+from forms import ChipDesignEditForm
+from django.forms.models import modelform_factory
 
 from models import ChipDesign
+from django.views.generic.edit import FormView
+from django.views.generic.edit import CreateView
+from django.views.generic.edit import DeleteView
+from django.views.generic.edit import UpdateView
 
 from django.db.models import ForeignKey
 from django.contrib.auth.models import User
 
 from bootstrap3.templatetags.bootstrap3 import bootstrap_button
 from django.contrib.auth.decorators import login_required
+from django.utils.decorators import method_decorator
 
-class ChipDesignAdd(TemplateView):
-	template_name = 'chipdesign_form.html'
+from betterforms.views import BrowseView
+from django_tables2 import SingleTableView
 
-	def get_context_data(self, **kwargs):
-		context = super(ChipDesignAdd, self).get_context_data(**kwargs)
-		context['AddButton'] = bootstrap_button( "Save", button_type="submit", button_class="btn-primary", href=reverse('add_design_process'))
-		return context
+from tables import ChipDesignTable
 
-class ChipDesignModify(TemplateView):
-	template_name = 'chipdesign_form.html'
+from django_tables2.utils import A  # alias for Accessor
 
-	def get_context_data(self, **kwargs):
-		context = super(ChipDesignModify, self).get_context_data(**kwargs)
-		context['AddButton'] = bootstrap_button( "Save", button_type="submit", button_class="btn-primary", href=reverse('modify_design_process'))
-		return context
-
-#@login_required(login_url='/accounts/login/')
-class ChipDesignView(ListView):
-	template_name = 'chipdesign_list.html'
+class ChipDesignDelete(DeleteView):
+	template_name = 'chipdesign_confirm_delete.html'
+	success_url = reverse_lazy('home')
 	model = ChipDesign
-	context_object_name = 'design_list'
 
-	def get_queryset(self):
-		recent_user=self.request.user
-		if recent_user.is_authenticated():
-			return ChipDesign.objects.filter(user=self.request.user)
+	@method_decorator(login_required)
+	def dispatch(self, request, *args, **kwargs):
+		return super(ChipDesignDelete, self).dispatch(request, *args, **kwargs)
 
-	def get_context_data(self, **kwargs):
-		context = super(ChipDesignView, self).get_context_data(**kwargs)
-		context['AddButton'] = bootstrap_button( "Add chip design", button_type="submit", button_class="btn-primary", href=reverse('add_design'))
-		return context
+class ChipDesignAdd(CreateView):
+	template_name = 'chipdesign_form.html'
+	form_class = ChipDesignEditForm
+	model = ChipDesign
+	success_url = reverse_lazy('home')
 
-class RegistrationViewCaptcha(RegistrationView):
-	form_class = RegistrationFormCaptcha
+	@method_decorator(login_required)
+	def dispatch(self, request, *args, **kwargs):
+		return super(ChipDesignAdd, self).dispatch(request, *args, **kwargs)
+
+	@csrf_protect
+	def view(request, *args, **kwargs):
+		print("\n\nviewing\n\n")
+		super(ChipDesignAdd, self).view(request, *args, **kwargs)
+
+	@csrf_protect
+	def save(self, force_insert, force_update):
+		print("\n\nviewing\n\n")
+		super(ChipDesignAdd, self).save(self, force_insert, force_update)
+
+class ChipDesignModify(UpdateView):
+	template_name = 'chipdesign_form.html'
+	form_class = ChipDesignEditForm
+	model = ChipDesign
+	success_url = reverse_lazy('home')
+
+	@method_decorator(login_required)
+	def dispatch(self, request, *args, **kwargs):
+		return super(ChipDesignModify, self).dispatch(request, *args, **kwargs)
+
+	@csrf_protect
+	def view(request, *args, **kwargs):
+		print("\n\nviewing\n\n")
+		super(ChipDesignModify, self).view(request, *args, **kwargs)
+
+class ChipDesignSelectionView(SingleTableView):
+	model = ChipDesign
+	table_class = ChipDesignTable
+	template_name = 'chipdesign_list.html'
+
+	@method_decorator(login_required)
+	def dispatch(self, request, *args, **kwargs):
+		return super(ChipDesignSelectionView, self).dispatch(request, *args, **kwargs)
+
+	def view(request, *args, **kwargs):
+		super(ChipDesignSelectionView, self).view(request, *args, **kwargs)
+

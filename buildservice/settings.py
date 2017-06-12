@@ -11,11 +11,14 @@ https://docs.djangoproject.com/en/1.10/ref/settings/
 """
 
 import os
+from django.utils.translation import ugettext_lazy as _
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 from secrets import *
+from local_settings import *
+from multisite import SiteID
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.10/howto/deployment/checklist/
@@ -26,9 +29,15 @@ ALLOWED_HOSTS = [
 	"ocb.lanceville.cn",
 	"ec2-13-58-165-77.us-east-2.compute.amazonaws.com",
 ]
+
+MULTISITE_EXTRA_HOSTS = ALLOWED_HOSTS
+
 ACCOUNT_ACTIVATION_DAYS = 1
 
 # Application definition
+
+#SITE_ID = 2
+SITE_ID = SiteID(default=2)
 
 INSTALLED_APPS = [
 	'django.contrib.admin',
@@ -38,10 +47,28 @@ INSTALLED_APPS = [
 	'django.contrib.messages',
 	'django.contrib.staticfiles',
 	'django.contrib.sites',
+	'multisite',
+	'treebeard',
+	'cms',
+	'django_tables2',
+	'crispy_forms',
 	'registration.backends.hmac',
 	'menu',
+	'menus',
 	'bootstrap3',
 	'captcha',
+	'allauth',
+	'allauth.account',
+	'allauth.socialaccount',
+#	'allauth.socialaccount.providers.facebook',
+#	'allauth.socialaccount.providers.google',
+	'allauth.socialaccount.providers.github',
+#	'allauth.socialaccount.providers.openid',
+#	'allauth.socialaccount.providers.twitch',
+#	'allauth.socialaccount.providers.twitter',
+	'allauth.socialaccount.providers.weibo',
+#	'allauth.socialaccount.providers.xing',
+	'betterforms',
 	'buildservice',
 ]
 
@@ -53,9 +80,22 @@ MIDDLEWARE = [
 	'django.contrib.auth.middleware.AuthenticationMiddleware',
 	'django.contrib.messages.middleware.MessageMiddleware',
 	'django.middleware.clickjacking.XFrameOptionsMiddleware',
+	'cms.middleware.user.CurrentUserMiddleware',
+	'multisite.middleware.CookieDomainMiddleware',
 ]
 
+CACHE_MULTISITE_ALIAS = 'multisite'
+CACHE_MULTISITE_KEY_PREFIX = ''
+#MULTISITE_FALLBACK = 'django.views.generic.base.RedirectView'
+#MULTISITE_FALLBACK_KWARGS = {'url': 'http://example.com/', 'permanent': False}
+
 ROOT_URLCONF = 'buildservice.urls'
+
+AUTHENTICATION_BACKENDS = (
+	"allauth.account.auth_backends.AuthenticationBackend",
+)
+
+LOGIN_URL = '/login/'
 
 TEMPLATES = [
 	{
@@ -72,6 +112,17 @@ TEMPLATES = [
 		},
 	},
 ]
+
+CACHES = {
+	'default': {
+		'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
+		'TIMEOUT': 60 * 60 * 24,  # 24 hours
+	},
+	'multisite': {
+		'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
+		'TIMEOUT': 60 * 60 * 24,  # 24 hours
+	},
+}
 
 WSGI_APPLICATION = 'buildservice.wsgi.application'
 
@@ -99,22 +150,27 @@ AUTH_PASSWORD_VALIDATORS = [
 		'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
 	},
 	{
-		'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
-	},
-	{
 		'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
 	},
 	{
 		'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
 	},
+	{
+		'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
+	},
 ]
 
 ACCOUNT_EMAIL_VERIFICATION = "mandatory"
+EMAIL_REQUIRED = True
 
 # Internationalization
 # https://docs.djangoproject.com/en/1.10/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = 'en'
+
+LANGUAGES = (
+    ('en', _('English')),
+)
 
 TIME_ZONE = 'UTC'
 
@@ -124,12 +180,17 @@ USE_L10N = True
 
 USE_TZ = True
 
+ACCOUNT_SIGNUP_FORM_CLASS = 'buildservice.forms.RegistrationFormCaptcha'
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.10/howto/static-files/
 
 STATIC_URL = '/static/'
 STATIC_ROOT = BASE_DIR+STATIC_URL
+
+STATICFILES_DIRS = (
+	BASE_DIR+'/persistent_static/',
+)
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 
