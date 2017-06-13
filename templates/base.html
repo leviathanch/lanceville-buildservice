@@ -1,5 +1,9 @@
 {% extends "base_site.html" %}
 
+{% block side_block %}
+<a href="{% url 'qflow' %}">QFlow</a>
+{% endblock %}
+
 {% block body_block %}
 {% block content %}{% endblock %}
 {% endblock %}
