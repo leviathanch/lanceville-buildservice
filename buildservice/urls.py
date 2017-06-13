@@ -10,6 +10,8 @@ import buildservice.views
 import django.contrib.auth.views
 import registration.backends.hmac.views
 
+import qflow.views
+
 admin.autodiscover()
 
 urlpatterns = [
@@ -29,5 +31,7 @@ urlpatterns = [
 
 	url(r'^design/modify/(?P<pk>\d+)/$', buildservice.views.ChipDesignModify.as_view(), name='modify_design'),
 	url(r'^design/delete/(?P<pk>\d+)/$', buildservice.views.ChipDesignDelete.as_view(), name='delete_design'),
+
+	url(r'^qflow', qflow.views.Settings.as_view(), name='qflow'),
 
 ] + static(buildservice.settings.STATIC_URL, document_root=buildservice.settings.STATIC_ROOT)
