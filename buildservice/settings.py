@@ -63,7 +63,7 @@ INSTALLED_APPS = [
 #	'allauth.socialaccount.providers.facebook',
 #	'allauth.socialaccount.providers.google',
 	'allauth.socialaccount.providers.github',
-#	'allauth.socialaccount.providers.openid',
+	'allauth.socialaccount.providers.openid',
 #	'allauth.socialaccount.providers.twitch',
 #	'allauth.socialaccount.providers.twitter',
 	'allauth.socialaccount.providers.weibo',
@@ -124,6 +124,7 @@ CACHES = {
 	},
 	'multisite': {
 		'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
+		#'BACKEND': 'django.core.cache.backends.filebased.FileBasedCache',
 		'TIMEOUT': 60 * 60 * 24,  # 24 hours
 	},
 }

@@ -7,11 +7,11 @@ from models import ChipDesign
 class ChipDesignTable(Table):
 	delete_link = LinkColumn('delete_design', args=[A('id')], text='Delete')
 	edit_link = LinkColumn('modify_design', args=[A('id')], text='Edit')
-	name = LinkColumn('work_bench', args=[A('id')])
+	name = LinkColumn('work_bench_open', args=[A('id')])
 	orderable = False
 
 	class Meta:
 		model = ChipDesign
-		fields = ('name', 'description','delete_link') # fields to display
+		fields = ('name', 'description') # fields to display
 		attrs = {'class': 'table table-striped'}
 	

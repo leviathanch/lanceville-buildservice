@@ -7,6 +7,7 @@ from captcha.fields import ReCaptchaField
 from django.forms import CharField
 from django.forms import URLField
 from django.forms import ModelForm
+from django.forms.forms import NON_FIELD_ERRORS
 
 from django.db.models import ForeignKey
 
@@ -24,6 +25,8 @@ from suit.admin import SortableModelAdmin
 from suit.admin import SortableChangeList
 from suit.admin import SortableListForm
 
+from django.core.exceptions import ValidationError
+
 class RegistrationFormCaptcha(RegistrationForm):
 	captcha = ReCaptchaField(public_key=GOOGLE_RECAPTCHA_SITE_KEY,private_key=GOOGLE_RECAPTCHA_SECRET_KEY)
 
@@ -37,8 +40,14 @@ class ChipDesignEditForm(BetterModelForm):
 	label = 'Design'
 	class Meta:
 		model = ChipDesign
-		fields = ('name','url','private','locally','description')
+		fields = ('name','url','description')
 		fieldsets = [('design', {
-			'fields': ['name','url','private','locally','description'],
+			'fields': ['name','url','description'],
 			'legend': '', 'classes': ['boxy-grey'],
 		})]
+
+	def validate_unique(self):
+		try:
+			self.instance.validate_unique()
+		except ValidationError, e:
+			self._update_errors(e.message_dict)
