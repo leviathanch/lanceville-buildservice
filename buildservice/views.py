@@ -91,3 +91,5 @@ class ChipDesignSelectionView(SingleTableView):
 	def view(request, *args, **kwargs):
 		super(ChipDesignSelectionView, self).view(request, *args, **kwargs)
 
+class WorkBenchView(TemplateView):
+	template_name = 'base.html'
