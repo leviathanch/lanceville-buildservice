@@ -21,6 +21,10 @@ from django.views.generic.edit import CreateView
 from django.views.generic.edit import DeleteView
 from django.views.generic.edit import UpdateView
 
+from django.views.generic.detail import DetailView
+from django.views.generic.detail import SingleObjectMixin
+from django.views.generic.detail import SingleObjectTemplateResponseMixin
+
 from django.db.models import ForeignKey
 from django.contrib.auth.models import User
 
@@ -91,5 +95,8 @@ class ChipDesignSelectionView(SingleTableView):
 	def view(request, *args, **kwargs):
 		super(ChipDesignSelectionView, self).view(request, *args, **kwargs)
 
-class WorkBenchView(TemplateView):
-	template_name = 'base.html'
+class WorkBenchView(DetailView):
+	template_name = 'workbench_default.html'
+	model = ChipDesign
+
+
