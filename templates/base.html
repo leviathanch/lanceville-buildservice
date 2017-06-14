@@ -1,9 +1,33 @@
 {% extends "base_site.html" %}
 
 {% block side_block %}
-<b>Work bench</b></br>
-{{ request.session.design }}
-<a href="{% url 'qflow' %}">QFlow</a>
+{% if request.session.open_designs %}
+	{% for design in request.session.open_designs %}
+		<p><div class='nav-sidebar-box'>
+			<div class='nav-sidebar-box-header'>
+				<div class='nav-sidebar-box-header-actions'>
+					<a href="{% url 'work_bench_close' design.id %}"><img id=delete src="/static/delete.png"/></a>
+				</div>
+				Workbench: {{ design.name }}
+			</div>
+			<div class='nav-sidebar-menu'>
+				<p><a href="{% url 'qflow' design.id %}" class="btn btn-info btn-sm">
+					<span class="glyphicon glyphicon-menu-right"></span>	QFlow
+				</a></p>
+				<p><a href="{% url 'yosys' design.id %}" class="btn btn-info btn-sm">
+					<span class="glyphicon glyphicon-menu-right"></span>	Yosys
+				</a></p>
+				<p><a href="{% url 'qrouter' design.id %}" class="btn btn-info btn-sm">
+					<span class="glyphicon glyphicon-menu-right"></span>	QRouter
+				</a></p>
+				<p><a href="{% url 'graywolf' design.id %}" class="btn btn-info btn-sm	">
+					<span class="glyphicon glyphicon-menu-right"></span>	Graywolf
+				</a></p>
+				<br/>
+			</div>
+		</div></p>
+	{% endfor %}
+{% endif %}
 {% endblock %}
 
 {% block body_block %}

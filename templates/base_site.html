@@ -20,6 +20,14 @@
 		<![endif]-->
 
 		{% block head_block %}{% endblock head_block %}
+
+		<!-- Bootstrap core JavaScript
+		================================================== -->
+		<!-- Placed at the end of the document so the pages load faster -->
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+		<script src="https://getbootstrap.com/dist/js/bootstrap.min.js"></script>
+		<!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+		<script src="https://getbootstrap.com/assets/js/ie10-viewport-bug-workaround.js"></script>
 	</head>
 
 	<body>
@@ -38,6 +46,7 @@
 					<ul class="nav navbar-nav navbar-right">
 						<li><a href="/">Home</a></li>
 						{% if user.is_authenticated %}
+						<li><a href="{% url 'profile' %}?next=/">Profile</a></li>
 						<li><a href="{% url 'account_logout' %}?next=/">Logout</a></li>
 						{% else %}
 						<li><a href="{% url 'account_login' %}?next=/">Login</a></li>
@@ -49,24 +58,10 @@
 		</div>
 
 		<div class="container-fluid">
-		<div class="row">
-			<div class="col-sm-3 col-md-2 sidebar">
-				{% block side_block %}{% endblock %}
-			</div>
-			<div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
-				<div>
-				{% block body_block %}{% endblock %}
-				</div>
+			<div class="row">
+				<div class="col-sm-3 col-md-2 sidebar">{% block side_block %}{% endblock %}</div>
+				<div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">{% block body_block %}{% endblock %}</div>
 			</div>
 		</div>
-		</div>
-
-		<!-- Bootstrap core JavaScript
-		================================================== -->
-		<!-- Placed at the end of the document so the pages load faster -->
-		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
-		<script src="http://getbootstrap.com/dist/js/bootstrap.min.js"></script>
-		<!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
-		<script src="http://getbootstrap.com/assets/js/ie10-viewport-bug-workaround.js"></script>
 	</body>
 </html>
