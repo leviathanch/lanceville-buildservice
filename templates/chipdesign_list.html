@@ -5,5 +5,7 @@
 {% load i18n %}
 {% load django_tables2 %}
 {% load crispy_forms_tags %}
+<h2>Please select/edit design</h2>
 {% render_table table %}
+<a href="{% url 'add_design' %}">Add Design</a>
 {% endblock %}
