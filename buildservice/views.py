@@ -47,9 +47,6 @@ from forms import RegistrationFormCaptcha
 from forms import ChipDesignEditForm
 from forms import UserForm
 
-from multi_form_view import MultiFormView
-from multi_form_view import MultiModelFormView
-
 from django_tables2.utils import A  # alias for Accessor
 
 class ChipDesignDelete(DeleteView, SingleObjectMixin):
