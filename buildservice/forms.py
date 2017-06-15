@@ -51,3 +51,13 @@ class ChipDesignEditForm(BetterModelForm):
 			self.instance.validate_unique()
 		except ValidationError, e:
 			self._update_errors(e.message_dict)
+
+class UserForm(BetterModelForm):
+	email = CharField()
+	class Meta:
+		model = User
+		fields = ('email',)
+		fieldsets = [('user', {
+			'fields': ['email'],
+			'legend': '', 'classes': ['boxy-grey'],
+		})]

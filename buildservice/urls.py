@@ -22,7 +22,7 @@ urlpatterns = [
 	url(r'^admin', admin.site.urls, name='admin'),
 
 	# profile settings
-	url(r'^profile', buildservice.views.UpdateProfileView.as_view(), name='profile'),
+	url(r'^profile/(?P<pk>\d+)/$', buildservice.views.UpdateProfileView.as_view(), name='profile'),
 
 	# default page
 	url(r'^$', buildservice.views.ChipDesignSelectionView.as_view(), name='home'),
@@ -40,14 +40,13 @@ urlpatterns = [
 
 	url(r'^workbench/open/(?P<pk>\d+)/$', buildservice.views.WorkBenchOpenView.as_view(), name='work_bench_open'),
 	url(r'^workbench/close/(?P<pk>\d+)/$', buildservice.views.WorkBenchCloseView.as_view(), name='work_bench_close'),
-	url(r'^workbench', buildservice.views.WorkBenchView.as_view(), name='work_bench'),
 
-	url(r'^workbench/qflow/(?P<pk>\d+)/', qflow.views.DefaultView.as_view(), name='qflow'),
+	url(r'^workbench/qflow/(?P<pk>\d+)/$', qflow.views.DefaultView.as_view(), name='qflow'),
 
-	url(r'^workbench/yosys/(?P<pk>\d+)/', yosys.views.DefaultView.as_view(), name='yosys'),
+	url(r'^workbench/yosys/(?P<pk>\d+)/$', yosys.views.DefaultView.as_view(), name='yosys'),
 
-	url(r'^workbench/qrouter/(?P<pk>\d+)/', qrouter.views.DefaultView.as_view(), name='qrouter'),
+	url(r'^workbench/qrouter/(?P<pk>\d+)/$', qrouter.views.DefaultView.as_view(), name='qrouter'),
 
-	url(r'^workbench/graywolf/(?P<pk>\d+)/', graywolf.views.DefaultView.as_view(), name='graywolf'),
+	url(r'^workbench/graywolf/(?P<pk>\d+)/$', graywolf.views.DefaultView.as_view(), name='graywolf'),
 
 ] + static(buildservice.settings.STATIC_URL, document_root=buildservice.settings.STATIC_ROOT)

@@ -42,6 +42,10 @@ from models import ChipDesign
 
 from forms import RegistrationFormCaptcha
 from forms import ChipDesignEditForm
+from forms import UserForm
+
+from multi_form_view import MultiFormView
+from multi_form_view import MultiModelFormView
 
 from django_tables2.utils import A  # alias for Accessor
 
@@ -168,5 +172,12 @@ class WorkBenchView(DetailView):
 	template_name = 'workbench_default.html'
 	model = ChipDesign
 
-class UpdateProfileView(UpdateView):
-	model = User
+class UpdateProfileView(MultiFormView):
+	form_classes = {
+		'user_form' : UserForm,
+	}
+	record_id=None
+	template_name = 'profile_form.html'
+
+	def get_success_url(self):
+		return reverse_lazy('home')
