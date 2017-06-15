@@ -175,12 +175,8 @@ class WorkBenchView(DetailView):
 	template_name = 'workbench_default.html'
 	model = ChipDesign
 
-class UpdateProfileView(DetailView):
+class UpdateProfileView(TemplateView):
 	template_name = 'profile_form.html'
-	model = User
-
-	#def get_success_url(self):
-	#	return reverse_lazy('home')
 
 	def get_context_data(self, **kwargs):
 		context = super(UpdateProfileView, self).get_context_data(**kwargs)

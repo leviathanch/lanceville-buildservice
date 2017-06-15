@@ -6,6 +6,7 @@
 <form method="post" enctype="multipart/form-data">
 	{% csrf_token %}
 	{{ forms.user_form.as_p }}
+	<b>SSH keys</b>
 	{% render_table key_table %}
 	<input type="submit" value="submit"/>
 </form>
