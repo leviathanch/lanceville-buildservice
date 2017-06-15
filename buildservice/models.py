@@ -19,7 +19,7 @@ class ChipDesign(Model):
 		db_table = 'buildservice_chipdesign'
 		unique_together = ('user', 'name')
 
-class SSHPublicKeys(Model):
+class SSHPublicKey(Model):
 	user = ForeignKey(User, default=get_current_user)
 	key = CharField(max_length=1000, blank=False)
 

@@ -38,6 +38,9 @@ from betterforms.views import BrowseView
 from django_tables2 import SingleTableView
 
 from tables import ChipDesignTable
+from tables import SSHKeyTable
+
+from models import SSHPublicKey
 from models import ChipDesign
 
 from forms import RegistrationFormCaptcha
@@ -172,12 +175,14 @@ class WorkBenchView(DetailView):
 	template_name = 'workbench_default.html'
 	model = ChipDesign
 
-class UpdateProfileView(MultiFormView):
-	form_classes = {
-		'user_form' : UserForm,
-	}
-	record_id=None
+class UpdateProfileView(DetailView):
 	template_name = 'profile_form.html'
+	model = User
 
-	def get_success_url(self):
-		return reverse_lazy('home')
+	#def get_success_url(self):
+	#	return reverse_lazy('home')
+
+	def get_context_data(self, **kwargs):
+		context = super(UpdateProfileView, self).get_context_data(**kwargs)
+		context['key_table'] =  SSHKeyTable(SSHPublicKey.objects.all(), prefix="1-")
+		return context

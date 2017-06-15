@@ -3,6 +3,7 @@ from django_tables2.columns import LinkColumn
 from django_tables2.utils import A  # alias for Accessor
 
 from models import ChipDesign
+from models import SSHPublicKey
 
 class ChipDesignTable(Table):
 	delete_link = LinkColumn('delete_design', args=[A('id')], text='Delete')
@@ -14,4 +15,14 @@ class ChipDesignTable(Table):
 		model = ChipDesign
 		fields = ('name', 'description') # fields to display
 		attrs = {'class': 'table table-striped'}
-	
+
+class SSHKeyTable(Table):
+	#delete_link = LinkColumn('delete_design', args=[A('id')], text='Delete')
+	#edit_link = LinkColumn('modify_design', args=[A('id')], text='Edit')
+	#name = LinkColumn('work_bench_open', args=[A('id')])
+	orderable = False
+
+	class Meta:
+		model = SSHPublicKey
+		fields = ('key',) # fields to display
+		attrs = {'class': 'table table-striped'}
