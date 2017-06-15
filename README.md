@@ -23,3 +23,5 @@ We run it on AWS and help you easily designing ASICs with a few clicks and no ma
 * django-suit
 * django-tables2
 * django-crispy-forms
+* django-utils
+* django-multi-form-view
