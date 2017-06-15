@@ -23,6 +23,7 @@ urlpatterns = [
 
 	# profile settings
 	url(r'^profile/(?P<pk>\d+)/$', buildservice.views.UpdateProfileView.as_view(), name='profile'),
+	url(r'^profile/(?P<pk>\d+)/$', buildservice.views.UpdateProfileView.as_view(), name='profile'),
 
 	# default page
 	url(r'^$', buildservice.views.ChipDesignSelectionView.as_view(), name='home'),
@@ -32,7 +33,6 @@ urlpatterns = [
 	# managing chip designs
 	url(r'^design/add', buildservice.views.ChipDesignAdd.as_view(), name='add_design'),
 
-	url(r'^design/add', buildservice.views.ChipDesignAdd.as_view(), name='add_design_process'),
 	url(r'^design/add/success', buildservice.views.ChipDesignAdd.as_view(), name='add_design_sucess'),
 
 	url(r'^design/modify/(?P<pk>\d+)/$', buildservice.views.ChipDesignModify.as_view(), name='modify_design'),
