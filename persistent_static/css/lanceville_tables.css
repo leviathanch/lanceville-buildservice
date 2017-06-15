@@ -13,12 +13,10 @@ img#add {
 	height: 20px;
 }
 
-td#edit_link {
-	width: 40px !important;;
-	border: 1px solid black;
+td.edit_link {
+	width: 40px;
 }
 
-td#delete_link {
-	width: 40px !important;;
-	border: 1px solid black;
+td.delete_link {
+	width: 40px;
 }
