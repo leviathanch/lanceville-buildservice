@@ -27,6 +27,7 @@ ALLOWED_HOSTS = [
 	"127.0.0.1",
 	"localhost",
 	"ocb.lanceville.cn",
+	"ocb.lanceville.tech",
 	"ec2-13-58-165-77.us-east-2.compute.amazonaws.com",
 ]
 
