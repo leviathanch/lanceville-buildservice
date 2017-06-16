@@ -1,0 +1,9 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block content %}
+	<p>A re you sure you want to delete: "{{ object.content }}"?</p>
+	<form method="POST" action="."> {% csrf_token %}
+		<p>{% csrf_token %}<input type="submit" value="{% trans "Delete this" %}" /></p>
+	</form>
+{% endblock %}
