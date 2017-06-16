@@ -34,6 +34,8 @@ from bootstrap3.templatetags.bootstrap3 import bootstrap_button
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 
+from cms.utils.permissions import get_current_user
+
 from betterforms.views import BrowseView
 from django_tables2 import SingleTableView
 
@@ -179,3 +181,21 @@ class UpdateProfileView(TemplateView):
 		context = super(UpdateProfileView, self).get_context_data(**kwargs)
 		context['key_table'] =  SSHKeyTable(SSHPublicKey.objects.all(), prefix="1-")
 		return context
+
+	def get(self, request, *args, **kwargs):
+		# Add new record
+		new_key=request.GET.get('new_key')
+		if(new_key!=None):
+			if(len(new_key)>0):
+				key=SSHPublicKey(user=get_current_user(), key=new_key)
+				key.save()
+
+		# Updating existing record
+		key_id=request.GET.get('key_id')
+		update_key=request.GET.get('update_key')
+		if((update_key!=None) and (key_id!=None)):
+			key=SSHPublicKey.objects.get(id=key_id)
+			key.key = update_key
+			key.save()
+
+		return super(UpdateProfileView, self).get(request, *args, **kwargs)

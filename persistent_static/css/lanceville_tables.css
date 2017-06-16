@@ -13,10 +13,35 @@ img#add {
 	height: 20px;
 }
 
+img#save {
+	width: 20px;
+	height: 20px;
+}
+
 td.edit_link {
 	width: 40px;
 }
 
 td.delete_link {
 	width: 40px;
+}
+
+textarea#new_key {
+	border: none;
+	width: 100%;
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+}
+
+td.id {
+	display:none;
+}
+
+td.key {
+	border: none;
+	width: 100%;
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
 }

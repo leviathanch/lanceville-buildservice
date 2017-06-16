@@ -57,6 +57,7 @@ INSTALLED_APPS = [
 	'menus',
 	'bootstrap3',
 	'captcha',
+	'tinymce',
 	'allauth',
 	'allauth.account',
 	'allauth.socialaccount',

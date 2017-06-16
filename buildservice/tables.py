@@ -15,8 +15,13 @@ from models import ChipDesign
 from models import SSHPublicKey
 
 class IconLinkColumn(TemplateColumn):
-	def __init__(self, title, url, icon, args=None, verbose_name=' ', **kwargs):
+	def __init__(self, title=None, url=None, jsfun=None, icon=None, args=None, verbose_name=' ', **kwargs):
 		super(IconLinkColumn, self).__init__(verbose_name, **kwargs)
+		self.icon = icon
+		self.args = args
+		self.verbose_name = verbose_name
+		self.url = url
+		self.jsfun = jsfun
 
 	def header(self):
 		return u'%s' % self.verbose_name
@@ -29,51 +34,73 @@ class IconLinkColumn(TemplateColumn):
 
 		icon = '/static/img/' + self.icon + '.png'
 
-		args = [a.resolve(record) if isinstance(a, A) else a for a in self.args]
+		nargs = None
+		if(self.args):
+			nargs = [a.resolve(record) if isinstance(a, A) else a for a in self.args]
+	
+	
+		if(self.jsfun):
+			if(self.url):
+				if nargs:
+					jsurl = reverse(self.url, args=nargs)
+				else:
+					jsurl = reverse(self.url)
+				url = 'javascript:'+self.jsfun+'('+jsurl+')'
+			else:
+				if nargs:
+					url = 'javascript:'+self.jsfun+'('+str(nargs[0])
+					for i in nargs[1:]:
+						url+=','+str(i)
+					url+=')'
+				else:
+					url = 'javascript:'+self.jsfun+'()'
 
-		if args:
-			url = reverse(self.url, args=args)
+		elif(self.url):
+			if nargs:
+				url = reverse(self.url, args=nargs)
+			else:
+				url = reverse(self.url)
+
+		elif(self.jsfun):
+			url = 'javascript:'+self.jsfun+'()'
+
 		else:
-			url = reverse(self.url)
+			url = "\t"
 
 		html = '<a href="{url}" title="{title}"><img alt="{title}" src="{icon}" id="{icon_name}"/></a>'.format(title=self.title, url=url, icon=icon, icon_name=self.icon)
 
 		return mark_safe(html)
 
 class EditLinkIcon(IconLinkColumn):
-	def __init__(self, url, args=None, verbose_name=' '):
-		super(IconLinkColumn, self).__init__(url, args)
-		self.icon = 'edit'
-		self.args = args
-		self.title = 'Edit'
-		self.url = url
-		self.verbose_name = verbose_name
+	def __init__(self, jsfun=None, url=None, args=None, verbose_name=' '):
+		super(EditLinkIcon, self).__init__(jsfun=jsfun,url=url, args=args)
+		self.title='Edit'
+		self.icon='edit'
+
 
 class DeleteLinkIcon(IconLinkColumn):
-	def __init__(self, url, args=None, verbose_name=' '):
-		super(IconLinkColumn, self).__init__(url, args)
-		self.icon = 'delete'
-		self.args = args
-		self.title = 'Delete'
-		self.url = url
-		self.verbose_name = verbose_name
+	def __init__(self, jsfun=None, url=None, args=None, verbose_name=' '):
+		super(DeleteLinkIcon, self).__init__(jsfun=jsfun,url=url, args=args)
+		self.title='Delete'
+		self.icon='delete'
 
 class ChipDesignTable(Table):
+	id = Column(orderable=False, verbose_name='')
 	name = LinkColumn('work_bench_open', args=[A('id')])
 	edit_link = EditLinkIcon(url='modify_design', args=[A('id')])
 	delete_link = DeleteLinkIcon(url='delete_design', args=[A('id')])
 
 	class Meta:
 		model = ChipDesign
-		fields = ('name', 'description') # fields to display
+		fields = ('id','name', 'description') # fields to display
 		attrs = {'class': 'table table-striped'}
 
 class SSHKeyTable(Table):
-	#save_link = LinkColumn('save_key', args=[A('id')], text='Edit', viewname='Miau1',)
-	#delete_link = LinkColumn('delete_key', args=[A('id')], text='Delete', viewname='Miau2',)
-	orderable = False
+	id = Column(orderable=False, verbose_name='')
+	edit_link = EditLinkIcon(jsfun='editPubKey', args=[A('id')])
+	delete_link = DeleteLinkIcon(jsfun='deletePubKey', args=[A('id')])
 
 	class Meta:
 		model = SSHPublicKey
-		fields = ('key',) # fields to display
+		fields = ('id','key',) # fields to display
 		attrs = {'class': 'table table-striped', 'id': 'key_table',}
