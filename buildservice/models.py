@@ -21,6 +21,7 @@ class ChipDesign(Model):
 
 class SSHPublicKey(Model):
 	user = ForeignKey(User, default=get_current_user)
+	comment = CharField(max_length=20, blank=False)
 	key = CharField(max_length=1000, blank=False)
 
 	class Meta:

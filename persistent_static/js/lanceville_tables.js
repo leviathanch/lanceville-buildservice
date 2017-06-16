@@ -44,6 +44,7 @@ function editPubKey(key_id) {
 							edit_cell = cells[k];
 							if(edit_cell.className=='key') {
 								edit_cell.innerHTML = '<textarea id="new_key" name="update_key">'+edit_cell.innerHTML+'</textarea>';
+								$("textarea").height( $("textarea")[0].scrollHeight );
 							}
 							if(edit_cell.className=='edit_link') {
 								edit_cell.innerHTML = '<a title="Apply" href="javascript:submitNewKey()"><img src="/static/img/check.png" id="save"/></a>';

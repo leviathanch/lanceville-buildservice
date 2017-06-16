@@ -2,7 +2,7 @@ import textwrap
 
 from django.utils import timezone
 from django.conf import settings
-from django.urls import reverse
+from django.core.urlresolvers import reverse
 
 from registration.backends.hmac.views import RegistrationView
 
@@ -50,6 +50,8 @@ from forms import ChipDesignEditForm
 from forms import UserForm
 
 from django_tables2.utils import A  # alias for Accessor
+
+from sshpubkeys import SSHKey
 
 class ChipDesignDelete(DeleteView, SingleObjectMixin):
 	template_name = 'chipdesign_confirm_delete.html'
@@ -174,28 +176,55 @@ class WorkBenchView(DetailView):
 	template_name = 'workbench_default.html'
 	model = ChipDesign
 
+class SSHKeyDelete(DeleteView, SingleObjectMixin):
+	template_name = 'key_confirm_delete.html'
+	success_url = reverse_lazy('profile')
+	model = SSHPublicKey
+
+	def __init__(self, *args, **kwargs):
+		user = get_current_user()
+		self.success_url = reverse_lazy('profile', args=[user.id])
+		super(SSHKeyDelete, self).__init__(*args, **kwargs)
+
 class UpdateProfileView(TemplateView):
 	template_name = 'profile_form.html'
+	key_status = None
 
 	def get_context_data(self, **kwargs):
 		context = super(UpdateProfileView, self).get_context_data(**kwargs)
-		context['key_table'] =  SSHKeyTable(SSHPublicKey.objects.all(), prefix="1-")
+		context['key_table'] = SSHKeyTable(SSHPublicKey.objects.all(), prefix="1-")
+		context['key_status'] = self.key_status
 		return context
 
 	def get(self, request, *args, **kwargs):
+		context = super(UpdateProfileView, self).get_context_data(**kwargs) # get context data
+
 		# Add new record
 		new_key=request.GET.get('new_key')
 		if(new_key!=None):
 			if(len(new_key)>0):
-				key=SSHPublicKey(user=get_current_user(), key=new_key)
-				key.save()
+				try:
+					ssh = SSHKey(new_key)
+					ssh.parse() # make sure the key is ok
+					key=SSHPublicKey(user=get_current_user(), comment=ssh.comment, key=new_key)
+					key.save()
+					self.key_status='Added new key with ID: '+ssh.comment
+				except:
+					self.key_status='Could not add key'
 
 		# Updating existing record
 		key_id=request.GET.get('key_id')
 		update_key=request.GET.get('update_key')
 		if((update_key!=None) and (key_id!=None)):
-			key=SSHPublicKey.objects.get(id=key_id)
-			key.key = update_key
-			key.save()
+			try:
+				ssh = SSHKey(update_key)
+				ssh.parse() # make sure the key is ok
+				key=SSHPublicKey.objects.get(id=key_id)
+				key.key = update_key
+				key.comment = ssh.comment
+				key.save()
+				self.key_status='Updated key with ID: '+ssh.comment
+			except:
+				self.key_status='Could not update key'
 
 		return super(UpdateProfileView, self).get(request, *args, **kwargs)

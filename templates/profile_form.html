@@ -9,9 +9,10 @@
 	{{ forms.user_form.as_p }}
 	<b>SSH keys</b>
 	{% render_table key_table %}
+	{% if key_status %}
+		{{ key_status }}
+	{% endif %}
 	<br/>
 	<a href="javascript:addNewKey()">{% trans "Add key" %}</a>
-	<br/><br/>
-	<input type="submit" value="submit"/>
 </form>
 {% endblock %}

@@ -24,3 +24,4 @@ We run it on AWS and help you easily designing ASICs with a few clicks and no ma
 * django-tables2
 * django-crispy-forms
 * django-utils
+* sshpubkeys

@@ -92,15 +92,15 @@ class ChipDesignTable(Table):
 
 	class Meta:
 		model = ChipDesign
-		fields = ('id','name', 'description') # fields to display
+		fields = ('name', 'description','edit_link','delete_link','id') # fields to display
 		attrs = {'class': 'table table-striped'}
 
 class SSHKeyTable(Table):
 	id = Column(orderable=False, verbose_name='')
 	edit_link = EditLinkIcon(jsfun='editPubKey', args=[A('id')])
-	delete_link = DeleteLinkIcon(jsfun='deletePubKey', args=[A('id')])
+	delete_link = DeleteLinkIcon(url='delete_key', args=[A('id')])
 
 	class Meta:
 		model = SSHPublicKey
-		fields = ('id','key',) # fields to display
+		fields = ('comment','key','edit_link','delete_link','id') # fields to display
 		attrs = {'class': 'table table-striped', 'id': 'key_table',}

@@ -22,8 +22,8 @@ urlpatterns = [
 	url(r'^admin', admin.site.urls, name='admin'),
 
 	# profile settings
-	url(r'^profile/(?P<pk>\d+)/$', buildservice.views.UpdateProfileView.as_view(), name='profile'),
-	url(r'^profile/(?P<pk>\d+)/$', buildservice.views.UpdateProfileView.as_view(), name='profile'),
+	url(r'^profile/view/(?P<pk>\d+)/$', buildservice.views.UpdateProfileView.as_view(), name='profile'),
+	url(r'^profile/key/delete/(?P<pk>\d+)/$', buildservice.views.SSHKeyDelete.as_view(), name='delete_key'),
 
 	# default page
 	url(r'^$', buildservice.views.ChipDesignSelectionView.as_view(), name='home'),
