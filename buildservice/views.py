@@ -29,12 +29,14 @@ from django.views.decorators.csrf import csrf_protect
 
 from django.db.models import ForeignKey
 from django.contrib.auth.models import User
+from django.http.request import HttpRequest
 
 from bootstrap3.templatetags.bootstrap3 import bootstrap_button
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 
 from cms.utils.permissions import get_current_user
+from django.contrib.sites.shortcuts import get_current_site
 
 from betterforms.views import BrowseView
 from django_tables2 import SingleTableView
@@ -53,14 +55,24 @@ from django_tables2.utils import A  # alias for Accessor
 
 from sshpubkeys import SSHKey
 
+def class_view_decorator(function_decorator):
+	"""Convert a function based decorator into a class based decorator usable
+	on class based Views.
+	Can't subclass the `View` as it breaks inheritance (super in particular),
+	so we monkey-patch instead.
+	"""
+
+	def simple_decorator(View):
+		View.dispatch = method_decorator(function_decorator)(View.dispatch)
+		return View
+
+	return simple_decorator
+
+@class_view_decorator(login_required)
 class ChipDesignDelete(DeleteView, SingleObjectMixin):
 	template_name = 'chipdesign_confirm_delete.html'
 	success_url = reverse_lazy('home')
 	model = ChipDesign
-
-	@method_decorator(login_required)
-	def dispatch(self, request, *args, **kwargs):
-		return super(ChipDesignDelete, self).dispatch(request, *args, **kwargs)
 
 	def post(self, request, *args, **kwargs):
 		design = self.get_object()
@@ -80,58 +92,54 @@ class ChipDesignDelete(DeleteView, SingleObjectMixin):
 
 		return super(ChipDesignDelete, self).post(request, *args, **kwargs)
 
+@class_view_decorator(login_required)
 class ChipDesignAdd(CreateView):
 	template_name = 'chipdesign_form.html'
 	form_class = ChipDesignEditForm
 	model = ChipDesign
 	success_url = reverse_lazy('home')
+	user = None
 
-	@method_decorator(login_required)
-	def dispatch(self, request, *args, **kwargs):
-		return super(ChipDesignAdd, self).dispatch(request, *args, **kwargs)
+	def __init__(self, *args, **kwargs):
+		site_url = get_current_site(self)
+		self.user = get_current_user()
+		self.new_project_url = str(site_url) + '/' + str(self.user) + '/' 
+		super(ChipDesignAdd, self).__init__(*args, **kwargs)
+
+	def form_valid(self, form):
+		response = super(ChipDesignAdd, self).form_valid(form)
+		# do something with self.object
+		return response
 
 	@csrf_protect
 	def view(request, *args, **kwargs):
 		super(ChipDesignAdd, self).view(request, *args, **kwargs)
 
-	@csrf_protect
-	def save(self, force_insert, force_update):
-		print("\n\nviewing\n\n")
-		super(ChipDesignAdd, self).save(self, force_insert, force_update)
-
+@class_view_decorator(login_required)
 class ChipDesignModify(UpdateView):
 	template_name = 'chipdesign_form.html'
 	form_class = ChipDesignEditForm
 	model = ChipDesign
 	success_url = reverse_lazy('home')
 
-	@method_decorator(login_required)
-	def dispatch(self, request, *args, **kwargs):
-		return super(ChipDesignModify, self).dispatch(request, *args, **kwargs)
-
 	@csrf_protect
 	def view(request, *args, **kwargs):
 		super(ChipDesignModify, self).view(request, *args, **kwargs)
 
+@class_view_decorator(login_required)
 class ChipDesignSelectionView(SingleTableView):
 	model = ChipDesign
 	table_class = ChipDesignTable
 	template_name = 'chipdesign_list.html'
 
-	@method_decorator(login_required)
-	def dispatch(self, request, *args, **kwargs):
-		return super(ChipDesignSelectionView, self).dispatch(request, *args, **kwargs)
-
-	def view(request, *args, **kwargs):
-		super(ChipDesignSelectionView, self).view(request, *args, **kwargs)
-
+@class_view_decorator(login_required)
 class WorkBenchOpenView(RedirectView, SingleObjectMixin):
 	model = ChipDesign
 
 	def __init__(self, *args, **kwargs):
 		self.url = reverse_lazy('home')
 		super(WorkBenchOpenView, self).__init__(*args, **kwargs)
-	
+
 	def get(self, request, *args, **kwargs):
 		design = self.get_object()
 		if 'open_designs' in request.session:
@@ -149,6 +157,7 @@ class WorkBenchOpenView(RedirectView, SingleObjectMixin):
 
 		return super(WorkBenchOpenView, self).get(request, *args, **kwargs)
 
+@class_view_decorator(login_required)
 class WorkBenchCloseView(RedirectView, SingleObjectMixin):
 	model = ChipDesign
 
@@ -172,10 +181,12 @@ class WorkBenchCloseView(RedirectView, SingleObjectMixin):
 
 		return super(WorkBenchCloseView, self).get(request, *args, **kwargs)
 
+@class_view_decorator(login_required)
 class WorkBenchView(DetailView):
 	template_name = 'workbench_default.html'
 	model = ChipDesign
 
+@class_view_decorator(login_required)
 class SSHKeyDelete(DeleteView, SingleObjectMixin):
 	template_name = 'key_confirm_delete.html'
 	success_url = reverse_lazy('profile')
@@ -186,6 +197,7 @@ class SSHKeyDelete(DeleteView, SingleObjectMixin):
 		self.success_url = reverse_lazy('profile', args=[user.id])
 		super(SSHKeyDelete, self).__init__(*args, **kwargs)
 
+@class_view_decorator(login_required)
 class UpdateProfileView(TemplateView):
 	template_name = 'profile_form.html'
 	key_status = None
@@ -228,3 +240,4 @@ class UpdateProfileView(TemplateView):
 				self.key_status='Could not update key'
 
 		return super(UpdateProfileView, self).get(request, *args, **kwargs)
+
