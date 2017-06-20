@@ -92,7 +92,7 @@ class ChipDesignTable(Table):
 
 	class Meta:
 		model = ChipDesign
-		fields = ('name', 'description','edit_link','delete_link','id') # fields to display
+		fields = ('name','technology','description','edit_link','delete_link','id') # fields to display
 		attrs = {'class': 'table table-striped'}
 
 class SSHKeyTable(Table):

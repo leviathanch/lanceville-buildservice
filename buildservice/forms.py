@@ -35,14 +35,13 @@ class ChipDesignEditForm(BetterModelForm):
 		required=False,
 		widget=TinyMCE(attrs={'style':'width:100%'})
 	)
-	url = URLField()
 	
 	label = 'Design'
 	class Meta:
 		model = ChipDesign
-		fields = ('name','url','description')
+		fields = ('name','description')
 		fieldsets = [('design', {
-			'fields': ['name','url','description'],
+			'fields': ['name','description'],
 			'legend': '', 'classes': ['boxy-grey'],
 		})]
 
@@ -61,3 +60,9 @@ class UserForm(BetterModelForm):
 			'fields': ['email'],
 			'legend': '', 'classes': ['boxy-grey'],
 		})]
+
+	def validate_unique(self):
+		try:
+			self.instance.validate_unique()
+		except ValidationError, e:
+			self._update_errors(e.message_dict)
