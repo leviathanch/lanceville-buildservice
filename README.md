@@ -25,3 +25,4 @@ We run it on AWS and help you easily designing ASICs with a few clicks and no ma
 * django-crispy-forms
 * django-utils
 * sshpubkeys
+* pyolite

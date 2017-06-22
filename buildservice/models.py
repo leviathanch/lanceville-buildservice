@@ -84,3 +84,4 @@ class CustomUserAdmin(UserAdmin):
 #site.unregister(User)
 #site.register(User, CustomUserAdmin)
 site.register(TechnologyNode)
+site.register(ChipDesign)

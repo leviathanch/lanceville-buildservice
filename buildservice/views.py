@@ -55,6 +55,8 @@ from django_tables2.utils import A  # alias for Accessor
 
 from sshpubkeys import SSHKey
 
+from pyolite import Pyolite
+
 def class_view_decorator(function_decorator):
 	"""Convert a function based decorator into a class based decorator usable
 	on class based Views.
@@ -107,9 +109,8 @@ class ChipDesignAdd(CreateView):
 		super(ChipDesignAdd, self).__init__(*args, **kwargs)
 
 	def form_valid(self, form):
-		response = super(ChipDesignAdd, self).form_valid(form)
-		# do something with self.object
-		return response
+		print form.save()
+		return super(ChipDesignAdd, self).form_valid(form)
 
 	@csrf_protect
 	def view(request, *args, **kwargs):
